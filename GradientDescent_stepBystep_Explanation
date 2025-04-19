@@ -1,0 +1,72 @@
+✅ Step-by-Step Breakdown
+1. Imports & Data Generation
+
+import numpy as np
+
+#You import numpy for efficient numerical computation.
+
+x = np.random.randn(10, 1)
+y = 2 * x + np.random.rand()
+
+#x: Generates 10 random input features from a normal distribution (mean 0, std 1).
+#y: Target values based on the function y = 2x + noise, simulating a true linear relationship with some random noise.
+#So here, the true values follow roughly y ≈ 2x.
+
+2. Initialize Parameters
+w = 0.0
+b = 0.0
+learning_rate = 0.01
+
+#w and b are initialized to zero. They will be updated using gradient descent.
+#learning_rate determines the size of the steps during optimization.
+
+3. Gradient Descent Function
+def descent(x, y, w, b, learning_rate):
+    dldw = 0.0
+    dldb = 0.0
+    N = x.shape[0]
+
+#This function computes the gradients of the loss function w.r.t. w and b.
+#N is the number of data points.
+
+    for xi, yi in zip(x, y):
+        dldw += -2 * xi * (yi - (w * xi + b))
+        dldb += -2 * (yi - (w * xi + b))
+
+#This loop calculates the gradient of the loss for each data point.
+#It accumulates the gradients for w and b across all samples.
+
+#Gradient formulas:
+
+∂Loss/∂w = -2/N * Σ [xᵢ (yᵢ - (w*xᵢ + b))]
+
+∂Loss/∂b = -2/N * Σ [yᵢ - (w*xᵢ + b)]
+
+    w = w - learning_rate * (1/N) * dldw
+    b = b - learning_rate * (1/N) * dldb
+    return w, b
+
+#You update w and b using the gradients and return the new values.
+
+4. Training Loop
+
+for epoch in range(400):
+The model is trained for 400 iterations (epochs).
+
+
+    w, b = descent(x, y, w, b, learning_rate)
+
+#Each epoch, you update the weights using the descent() function.
+
+    hypothesis = w * x + b 
+
+#Compute the prediction for current w and b.
+
+loss = np.divide(np.sum((y - hypothesis)**2, axis=0), x.shape[0])
+
+#Calculate Mean Squared Error (MSE) as the loss.
+
+print(f'{epoch} loss is{loss},parameters w:{w},b:{b}')
+
+#Print the loss and updated parameters for each epoch.
+
